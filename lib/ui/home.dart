@@ -1,17 +1,5 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'result.dart';
-
-void main() {
-  runApp(MaterialApp(
-    title: "Calculadora de IMC",
-    theme: ThemeData(
-      primarySwatch: Colors.green,
-    ),
-    home: Home(),
-  ));
-}
 
 class Home extends StatefulWidget {
   @override
@@ -19,18 +7,94 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  //definindo campos do form
   TextEditingController pesoController = TextEditingController();
   TextEditingController alturaController = TextEditingController();
-  GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  String _texto = "";
+
+  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
   void _resetCampos() {
-    _formkey.currentState!.reset();
-    pesoController.clear();
-    alturaController.clear();
-    setState(() {
-      _texto = "";
-    });
+    pesoController = TextEditingController();
+    alturaController = TextEditingController();
+    _formKey.currentState!.reset();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Calculadora de IMC"),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: _resetCampos,
+          )
+        ], //<Widget>[]
+      ), // app bar
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Icon(Icons.person, size: 120, color: Colors.blueAccent),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: "Peso (kg)",
+                    labelStyle: TextStyle(color: Colors.blueAccent)),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.blueAccent, fontSize: 25.0),
+                controller: pesoController,
+                validator: (value) {
+                  if (value!.isEmpty)
+                    return "Insira seu peso!";
+                  else
+                    return null;
+                },
+              ),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: "Altura (m)",
+                    labelStyle: TextStyle(color: Colors.blueAccent)),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.blueAccent, fontSize: 25.0),
+                controller: alturaController,
+                validator: (value) {
+                  if (value!.isEmpty)
+                    return "Insira sua altura!";
+                  else
+                    return null;
+                },
+              ),
+              Padding(
+                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: Container(
+                      height: 50.0,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _calcular();
+                          }
+                        },
+                        child: Text(
+                          "Calcular",
+                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            //  primary: Colors.blue,
+                            textStyle: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold)),
+                      ))),
+            ], //<widget>[]
+          ),
+        ),
+      ),
+    );
   }
 
   void _calcular() {
@@ -41,109 +105,29 @@ class _HomeState extends State<Home> {
     double altura = double.parse(alturaController.text);
 
     double imc = peso / (altura * altura);
-    String imcPrecisionFour = imc.toStringAsPrecision(4);
-
-    debugPrint("$imc");
+    //debugPrint("Peso ${peso} e altura ${altura}");
+    //debugPrint("$imc");
     if (imc < 18.6) {
       _texto = "Abaixo do peso (${imc.toStringAsPrecision(4)})";
-      _imagem = "imagens/thin.png";
+      _imagem = "images/thin.png";
     } else if (imc >= 18.6 && imc < 24.9) {
       _texto = "Peso ideal (${imc.toStringAsPrecision(4)})";
-      _imagem = "imagens/shape.png";
+      _imagem = "images/shape.png";
     } else if (imc >= 24.9 && imc < 29.9) {
       _texto = "Levemente acima do peso (${imc.toStringAsPrecision(4)})";
-      _imagem = "imagens/fat.png";
+      _imagem = "images/fat.png";
     } else if (imc >= 29.9 && imc < 34.9) {
       _texto = "Obesidade Grau I (${imc.toStringAsPrecision(4)})";
-      _imagem = "imagens/fat.png";
+      _imagem = "images/fat.png";
     } else if (imc >= 34.9 && imc < 39.9) {
       _texto = "Obesidade Grau II (${imc.toStringAsPrecision(4)})";
-      _imagem = "imagens/fat.png";
+      _imagem = "images/fat.png";
     } else if (imc >= 40) {
       _texto = "Obesidade Grau III (${imc.toStringAsPrecision(4)})";
-      _imagem = "imagens/fat.png";
+      _imagem = "images/fat.png";
     }
 
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => Result(_imagem, _texto)));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Calculadora de IMC"),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(onPressed: _resetCampos, icon: Icon(Icons.refresh))
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-        child: Form(
-            key: _formkey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Icon(
-                  Icons.person,
-                  size: 120,
-                  color: Colors.green,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      labelText: "Peso (kg)",
-                      labelStyle: TextStyle(color: Colors.green)),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.green, fontSize: 25.0),
-                  controller: pesoController,
-                  validator: (value) {
-                    if (value!.isEmpty)
-                      return "Insira seu peso!";
-                    else
-                      return null;
-                  },
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      labelText: "Altura (cm)",
-                      labelStyle: TextStyle(color: Colors.green)),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.green, fontSize: 25.0),
-                  controller: alturaController,
-                  validator: (value) {
-                    if (value!.isEmpty)
-                      return "Insira sua altura!";
-                    else
-                      return null;
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: ButtonTheme(
-                    height: 50,
-                    highlightColor: Colors.amber,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formkey.currentState!.validate()) _calcular();
-                      },
-                      child: const Text(
-                        "Calcular",
-                        style: TextStyle(color: Colors.white, fontSize: 25.0),
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  _texto,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.green, fontSize: 25),
-                )
-              ],
-            )),
-      ),
-    );
   }
 }
