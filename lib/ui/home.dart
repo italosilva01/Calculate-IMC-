@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'result.dart';
 
@@ -32,41 +34,38 @@ class _HomeState extends State<Home> {
   }
 
   void _calcular() {
-    setState(
-      () {
-        String _texto = "";
-        String _imagem = "";
+    String _texto = "";
+    String _imagem = "";
 
-        double peso = double.parse(pesoController.text);
-        double altura = double.parse(alturaController.text);
+    double peso = double.parse(pesoController.text);
+    double altura = double.parse(alturaController.text);
 
-        double imc = peso / (altura * altura);
-        String imcPrecisionFour = imc.toStringAsPrecision(4);
+    double imc = peso / (altura * altura);
+    String imcPrecisionFour = imc.toStringAsPrecision(4);
 
-        if (imc < 18.6) {
-          _texto = "Abaixo do peso (${imc.toStringAsPrecision(4)})";
-          _imagem = "imagens/thin.png";
-        } else if (imc >= 18.6 && imc < 24.9) {
-          _texto = "Peso ideal (${imc.toStringAsPrecision(4)})";
-          _imagem = "imagens/shape.png";
-        } else if (imc >= 24.9 && imc < 29.9) {
-          _texto = "Levemente acima do peso (${imc.toStringAsPrecision(4)})";
-          _imagem = "imagens/fat.png";
-        } else if (imc >= 29.9 && imc < 34.9) {
-          _texto = "Obesidade Grau I (${imc.toStringAsPrecision(4)})";
-          _imagem = "imagens/fat.png";
-        } else if (imc >= 34.9 && imc < 39.9) {
-          _texto = "Obesidade Grau II (${imc.toStringAsPrecision(4)})";
-          _imagem = "imagens/fat.png";
-        } else if (imc >= 40) {
-          _texto = "Obesidade Grau III (${imc.toStringAsPrecision(4)})";
-          _imagem = "imagens/fat.png";
-        }
+    debugPrint("$imc");
+    if (imc < 18.6) {
+      _texto = "Abaixo do peso (${imc.toStringAsPrecision(4)})";
+      _imagem = "imagens/thin.png";
+    } else if (imc >= 18.6 && imc < 24.9) {
+      _texto = "Peso ideal (${imc.toStringAsPrecision(4)})";
+      _imagem = "imagens/shape.png";
+    } else if (imc >= 24.9 && imc < 29.9) {
+      _texto = "Levemente acima do peso (${imc.toStringAsPrecision(4)})";
+      _imagem = "imagens/fat.png";
+    } else if (imc >= 29.9 && imc < 34.9) {
+      _texto = "Obesidade Grau I (${imc.toStringAsPrecision(4)})";
+      _imagem = "imagens/fat.png";
+    } else if (imc >= 34.9 && imc < 39.9) {
+      _texto = "Obesidade Grau II (${imc.toStringAsPrecision(4)})";
+      _imagem = "imagens/fat.png";
+    } else if (imc >= 40) {
+      _texto = "Obesidade Grau III (${imc.toStringAsPrecision(4)})";
+      _imagem = "imagens/fat.png";
+    }
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Result(_imagem, _texto)));
-      },
-    );
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Result(_imagem, _texto)));
   }
 
   @override

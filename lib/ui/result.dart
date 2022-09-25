@@ -4,7 +4,7 @@ class Result extends StatelessWidget {
   final String _imagem;
   final String _texto;
 
-  Result(this._imagem, this._texto);
+  const Result(this._imagem, this._texto);
 
   @override
   Widget build(BuildContext context) {
