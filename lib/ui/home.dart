@@ -36,10 +36,13 @@ class _HomeState extends State<Home> {
       () {
         String _texto = "";
         String _imagem = "";
+
         double peso = double.parse(pesoController.text);
         double altura = double.parse(alturaController.text);
+
         double imc = peso / (altura * altura);
         String imcPrecisionFour = imc.toStringAsPrecision(4);
+
         if (imc < 18.6) {
           _texto = "Abaixo do peso (${imc.toStringAsPrecision(4)})";
           _imagem = "imagens/thin.png";
@@ -59,6 +62,7 @@ class _HomeState extends State<Home> {
           _texto = "Obesidade Grau III (${imc.toStringAsPrecision(4)})";
           _imagem = "imagens/fat.png";
         }
+
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => Result(_imagem, _texto)));
       },
@@ -126,7 +130,7 @@ class _HomeState extends State<Home> {
                       onPressed: () {
                         if (_formkey.currentState!.validate()) _calcular();
                       },
-                      child: Text(
+                      child: const Text(
                         "Calcular",
                         style: TextStyle(color: Colors.white, fontSize: 25.0),
                       ),

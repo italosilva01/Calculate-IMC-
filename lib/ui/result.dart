@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Result extends StatelessWidget {
-  Result(this._imagem, this._texto);
+  final String _imagem;
+  final String _texto;
 
-  String _imagem;
-  String _texto;
+  Result(this._imagem, this._texto);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Resultado"),
+        title: const Text("Resultado"),
         backgroundColor: Colors.blueAccent,
       ),
       backgroundColor: Colors.white,
@@ -24,7 +24,8 @@ class Result extends StatelessWidget {
           ),
           Center(
             child: Text(_texto,
-                style: TextStyle(fontSize: 22.0, fontStyle: FontStyle.italic)),
+                style: const TextStyle(
+                    fontSize: 22.0, fontStyle: FontStyle.italic)),
           )
         ],
       ),
